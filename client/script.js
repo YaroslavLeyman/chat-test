@@ -10,10 +10,10 @@ function loader(element) {
   element.textContent = ''
 
   loadInterval = setInterval(() => {
-      // Update the text content of the loading indicator
+      // Обновление текстового содержимого индикатора загрузки
       element.textContent += '.';
 
-      // If the loading indicator has reached three dots, reset it
+      // Если индикатор загрузки достиг трех точек, сбрасываем его
       if (element.textContent === '....') {
           element.textContent = '';
       }
@@ -33,9 +33,9 @@ function typeText(element, text) {
   }, 20)
 }
 
-// generate unique ID for each message div of bot
-// necessary for typing text effect for that specific reply
-// without unique ID, typing text will work on every element
+// генерируем уникальный идентификатор для каждого сообщения div бота
+// необходимо для ввода текстового эффекта для конкретного ответа
+// без уникального идентификатора ввод текста будет работать с каждым элементом
 function generateUniqueId() {
   const timestamp = Date.now();
   const randomNumber = Math.random();
@@ -67,26 +67,26 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
-  // user's chatstripe
+  // полоса чата пользователя
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'))
 
-  // to clear the textarea input 
+  // очистить ввод текстовой области
   form.reset();
 
-  // bot's chatstripe
+  // полоса чата бота
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
 
-  // to focus scroll to the bottom 
+  // сфокусироваться, прокрутить страницу вниз
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
-  // specific message div 
+  // сообщение div 
   const messageDiv = document.getElementById(uniqueId);
 
   // messageDiv.innerHTML = "..."
   loader(messageDiv);
 
-  // fetch data from server -> bot response
+  // извлечение данных с сервера -> ответ бота
   const response = await fetch('https://open-ai-chat-epa6.onrender.com', {
     method: 'POST',
     headers: {
@@ -102,7 +102,7 @@ const handleSubmit = async (e) => {
 
   if (response.ok) {
     const data = await response.json();
-    const parsedData = data.bot.trim(); // trims any trailing spaces/'\n' 
+    const parsedData = data.bot.trim(); // обрезает все конечные пробелы/'\n' 
 
     typeText(messageDiv, parsedData);
   } else {
