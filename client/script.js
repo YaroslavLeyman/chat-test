@@ -87,7 +87,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   // извлечение данных с сервера -> ответ бота
-  const response = await fetch('https://open-ai-chat-epa6.onrender.com', {
+  const response = await fetch('http://localhost:5000', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
